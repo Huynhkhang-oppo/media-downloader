@@ -1,10 +1,3 @@
-Lỗi `❌ Các máy chủ bóc tách hiện đang quá tải hoặc video bị chặn...` như trong ảnh xảy ra vì GitHub Pages là một trang web tĩnh, khi bạn gọi API bóc tách trực tiếp (như Cobalt), các máy chủ này phát hiện bạn đang dùng chung nền tảng miễn phí nên đã chặn kết nối (lỗi CORS) hoặc từ chối phục vụ để tránh quá tải.
-
-Để giải quyết triệt để yêu cầu **"tải ngay trên trang, không nhảy sang web khác"** trên một hệ thống web tĩnh, giải pháp duy nhất và ổn định nhất là sử dụng phương pháp **Nhúng cửa sổ tải (Iframe)**. Mã nguồn của web sẽ tạo một "lỗ hổng" nhỏ và kéo trực tiếp nút tải từ máy chủ chuyên dụng hiển thị ngay trên trang của bạn. Bạn chỉ cần bấm vào nút xanh là file MP4 sẽ tự tải về máy, hoàn toàn không bị văng sang tab mới.
-
-Bạn hãy copy toàn bộ mã dưới đây và dán đè lên file `index.html` của bạn:
-
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -128,5 +121,3 @@ document.querySelector('#year').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
-
-```
