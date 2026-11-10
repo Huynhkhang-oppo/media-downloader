@@ -118,8 +118,8 @@ openBtn.addEventListener('click', async () => {
                 if (res.ok) {
                     const data = await res.json();
                     if (data.url) {
-                        const fallbackTitle = isYouTube ? "Tùy chọn chất lượng khác (Y2Mate)" : "Tùy chọn chất lượng khác (SnapSave)";
-                        const fallbackUrl = isYouTube ? `https://y2mate.com/youtube/${u.searchParams.get('v') || raw}` : `https://snapsave.app/?url=${encodeURIComponent(raw)}`;
+                        const fallbackTitle = isYouTube ? "Tùy chọn chất lượng khác (SSYouTube)" : "Tùy chọn chất lượng khác (SnapSave)";
+                        const fallbackUrl = isYouTube ? `https://ssyoutube.com/vi/?url=${encodeURIComponent(raw)}` : `https://snapsave.app/?url=${encodeURIComponent(raw)}`;
                         
                         showResult(`
                             ✅ Đã tìm thấy file Media!<br>
@@ -133,8 +133,8 @@ openBtn.addEventListener('click', async () => {
                 throw new Error("Cobalt API blocked or failed");
             } catch (err) {
                 // Nếu API Cobalt bị chặn CORS hoặc quá tải -> Chuyển sang trang tải có chọn chất lượng
-                const dlName = isYouTube ? "Y2Mate (Hỗ trợ 1080p, 720p, MP3)" : "SnapSave (Hỗ trợ HD, SD, MP3)";
-                const dlUrl = isYouTube ? `https://y2mate.com/youtube/${u.searchParams.get('v') || ''}` : `https://snapsave.app/?url=${encodeURIComponent(raw)}`;
+                const dlName = isYouTube ? "SSYouTube (Hỗ trợ 1080p, 720p, MP3)" : "SnapSave (Hỗ trợ HD, SD, MP3)";
+                const dlUrl = isYouTube ? `https://ssyoutube.com/vi/?url=${encodeURIComponent(raw)}` : `https://snapsave.app/?url=${encodeURIComponent(raw)}`;
                 
                 showResult(`
                     ⚠️ Do trình duyệt chặn tải ẩn, hãy lấy các chất lượng tải về tại đây:<br>
