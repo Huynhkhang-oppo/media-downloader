@@ -1,193 +1,132 @@
+Lỗi `❌ Các máy chủ bóc tách hiện đang quá tải hoặc video bị chặn...` như trong ảnh xảy ra vì GitHub Pages là một trang web tĩnh, khi bạn gọi API bóc tách trực tiếp (như Cobalt), các máy chủ này phát hiện bạn đang dùng chung nền tảng miễn phí nên đã chặn kết nối (lỗi CORS) hoặc từ chối phục vụ để tránh quá tải.
+
+Để giải quyết triệt để yêu cầu **"tải ngay trên trang, không nhảy sang web khác"** trên một hệ thống web tĩnh, giải pháp duy nhất và ổn định nhất là sử dụng phương pháp **Nhúng cửa sổ tải (Iframe)**. Mã nguồn của web sẽ tạo một "lỗ hổng" nhỏ và kéo trực tiếp nút tải từ máy chủ chuyên dụng hiển thị ngay trên trang của bạn. Bạn chỉ cần bấm vào nút xanh là file MP4 sẽ tự tải về máy, hoàn toàn không bị văng sang tab mới.
+
+Bạn hãy copy toàn bộ mã dưới đây và dán đè lên file `index.html` của bạn:
+
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Media Downloader — Tải video không logo</title>
-<meta name="description" content="Công cụ tải video không logo và audio từ TikTok.">
+<title>Media Downloader — Công cụ media trực tuyến</title>
+<meta name="description" content="Công cụ mở và tải video từ các nền tảng phổ biến.">
 <style>
-:root{--bg:#0b1020;--panel:#121a2e;--line:#26334f;--text:#edf3ff;--muted:#a9b7d2;--blue:#5b8cff;--violet:#9a68ff;--success:#2ecc71;}
+:root{--bg:#0b1020;--panel:#121a2e;--line:#26334f;--text:#edf3ff;--muted:#a9b7d2;--blue:#5b8cff;--violet:#9a68ff;--green:#10b981}
 *{box-sizing:border-box}body{margin:0;font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(circle at 15% 0,#1b2b57 0,transparent 35%),var(--bg);color:var(--text)}
 .wrap{max-width:900px;margin:auto;padding:28px 18px 50px}.top{display:flex;align-items:center;gap:12px;margin:12px 0 38px}.logo{width:45px;height:45px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--violet));display:grid;place-items:center;font-size:23px}.brand{font-weight:800;font-size:19px}.tag{font-size:12px;color:var(--muted)}
 .hero{text-align:center;margin-bottom:28px}.hero h1{font-size:clamp(30px,6vw,48px);line-height:1.12;margin:0 0 13px;letter-spacing:-1.4px}.grad{background:linear-gradient(90deg,#78a8ff,#c39aff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:620px;margin:0 auto}
 .card{background:rgba(18,26,46,.92);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 18px 60px #0003}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tab{border:1px solid var(--line);background:#10182b;color:var(--muted);padding:9px 14px;border-radius:12px;cursor:pointer;font-weight:650}.tab.active{background:#263b70;border-color:#557fe0;color:white}
-label{display:block;font-size:13px;color:var(--muted);margin:12px 0 7px}input,select{width:100%;padding:14px 15px;border-radius:12px;border:1px solid #344362;background:#0b1222;color:white;font:inherit;outline:none}input:focus,select:focus{border-color:var(--blue)}.row{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:13px}.btn{border:0;border-radius:12px;padding:13px 18px;font:inherit;font-weight:750;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--violet));color:white}.btn:disabled{opacity:0.7;cursor:not-allowed}.btn.secondary{background:#202c47;border:1px solid #354565}.note{font-size:13px;color:var(--muted);margin-top:13px}.result{display:none;margin-top:16px;padding:14px;border:1px solid #315b48;background:#10271f;border-radius:12px;color:#c9f7dc}.result.show{display:block; animation: fadeIn 0.3s ease;}
-.result a {display:inline-block; margin-top:10px; padding:10px 20px; background:var(--success); color:#000; text-decoration:none; font-weight:bold; border-radius:8px;}
-.result a:hover {opacity:0.9;}
+label{display:block;font-size:13px;color:var(--muted);margin:12px 0 7px}input,select{width:100%;padding:14px 15px;border-radius:12px;border:1px solid #344362;background:#0b1222;color:white;font:inherit;outline:none}input:focus,select:focus{border-color:var(--blue)}.row{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:13px}.btn{border:0;border-radius:12px;padding:13px 18px;font:inherit;font-weight:750;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--violet));color:white;text-align:center;text-decoration:none;display:inline-block}.btn.secondary{background:#202c47;border:1px solid #354565}.btn.success{background:var(--green);width:100%}.note{font-size:13px;color:var(--muted);margin-top:13px}.result{display:none;margin-top:16px;padding:16px;border:1px solid #315b48;background:#10271f;border-radius:12px;color:#c9f7dc}.result.show{display:block;animation:fadein 0.3s ease-in-out}@keyframes fadein{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
 .quick{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.quick a{display:block;text-decoration:none;color:var(--text);padding:15px;border:1px solid var(--line);border-radius:14px;background:#10182b}.quick strong{display:block}.quick small{color:var(--muted)}.section{margin-top:24px}.section h2{font-size:19px}.steps{color:var(--muted);padding-left:20px}.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:28px}
-@keyframes fadeIn {from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.iframe-container {width: 100%; height: 90px; border: none; border-radius: 8px; overflow: hidden; margin-top: 10px; background: transparent;}
 @media(max-width:600px){.row{grid-template-columns:1fr}.quick{grid-template-columns:1fr}.card{padding:16px}.top{margin-bottom:28px}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="top"><div class="logo">▶</div><div><div class="brand">Media Downloader</div><div class="tag">Công cụ media • miễn phí</div></div></header>
-<section class="hero"><h1>Tải & mở nội dung<br><span class="grad">theo cách đơn giản</span></h1><p>Dán đường dẫn nội dung của bạn để lấy link tải trực tiếp không logo.</p></section>
+<section class="hero"><h1>Tải & mở nội dung<br><span class="grad">theo cách đơn giản</span></h1><p>Dán đường dẫn nội dung của bạn để tải xuống trực tiếp không cần chuyển trang. Website chạy hoàn toàn trên GitHub Pages.</p></section>
 <main class="card">
 <div class="tabs" role="tablist">
-<button class="tab active" data-kind="video" type="button">🎬 Video (Không Logo)</button>
-<button class="tab" data-kind="audio" type="button">🎵 MP3 / Audio</button>
+<button class="tab active" data-kind="video" type="button">🎬 Tải Video (MP4)</button>
+<button class="tab" data-kind="audio" type="button">🎵 Tải Âm Thanh (MP3)</button>
 </div>
-<label for="url">Đường dẫn video (TikTok, YouTube, Facebook, Shopee)</label>
-<input id="url" type="url" placeholder="Dán link video vào đây..." autocomplete="url">
-<div class="row">
-    <button class="btn" id="openBtn">Lấy Link Tải ⬇</button>
-    <button class="btn secondary" id="pasteBtn" type="button">Dán link</button>
-</div>
+<label for="url">Đường dẫn video / bài đăng</label>
+<input id="url" type="url" placeholder="Dán link TikTok, YouTube, Facebook hoặc Shopee..." autocomplete="url">
+<div class="row"><button class="btn" id="openBtn">Xử lý link ⬇</button><button class="btn secondary" id="pasteBtn" type="button">Dán link</button></div>
 <div class="result" id="result" role="status"></div>
-<p class="note">ℹ️ Nền tảng hỗ trợ: TikTok (tải trực tiếp không logo), YouTube & Facebook (chọn chất lượng tải), Shopee (hỗ trợ công cụ Affiliate).</p>
+<p class="note">ℹ️ Nút tải sẽ hiển thị ngay bên dưới mà không cần chuyển hướng sang trang web khác.</p>
 </main>
 <div class="quick">
 <a href="https://www.tiktok.com/" target="_blank" rel="noopener"><strong>♪ TikTok</strong><small>Mở TikTok</small></a>
 <a href="https://www.youtube.com/" target="_blank" rel="noopener"><strong>▶ YouTube</strong><small>Mở YouTube</small></a>
-<a href="https://shopee.vn/" target="_blank" rel="noopener"><strong>🛍️ Shopee</strong><small>Lấy link video</small></a>
+<a href="https://www.facebook.com/" target="_blank" rel="noopener"><strong>f Facebook</strong><small>Mở Facebook</small></a>
 </div>
-<footer class="footer">© <span id="year"></span> Media Downloader • Chạy qua API trên GitHub Pages.</footer>
+<footer class="footer">© <span id="year"></span> Media Downloader • Không lưu trữ dữ liệu.</footer>
 </div>
 
 <script>
-const input = document.querySelector('#url'), 
-      result = document.querySelector('#result'),
-      openBtn = document.querySelector('#openBtn');
+const input = document.querySelector('#url'), result = document.querySelector('#result');
 let kind = 'video';
 
-// Chuyển đổi tab Video / Audio
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
     b.classList.add('active');
     kind = b.dataset.kind;
-    openBtn.textContent = kind === 'audio' ? 'Lấy Link MP3 ⬇' : 'Lấy Link Video ⬇';
 }));
 
-// Xử lý khi bấm nút lấy link
-openBtn.addEventListener('click', async () => {
-    const raw = input.value.trim();
-    
-    // Kiểm tra đầu vào
-    if(!raw) {
-        showResult('Bạn hãy dán một đường dẫn trước nhé.', false);
-        return;
-    }
-    
-    let u;
-    try { u = new URL(raw); } 
-    catch { 
-        showResult('Link chưa hợp lệ. Vui lòng kiểm tra lại (nhớ copy đầy đủ https://...).', false); 
-        return; 
-    }
-
-    const host = u.hostname.toLowerCase();
-    const isTikTok = host.includes('tiktok.com');
-    const isYouTube = host.includes('youtube.com') || host.includes('youtu.be');
-    const isFacebook = host.includes('facebook.com') || host.includes('fb.watch') || host.includes('fb.gg');
-    const isShopee = host.includes('shopee.vn') || host.includes('shp.ee');
-
-    openBtn.disabled = true;
-    openBtn.textContent = 'Đang xử lý...';
-    showResult('Đang phân tích dữ liệu, vui lòng đợi... ⏳', true);
-
-    try {
-        // 1. XỬ LÝ TIKTOK
-        if (isTikTok) {
-            const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(raw)}`);
-            const data = await response.json();
-
-            if (data.code === 0) {
-                const targetUrl = kind === 'audio' ? data.data.music : data.data.play;
-                const fileType = kind === 'audio' ? 'Âm thanh (MP3)' : 'Video (Không Logo)';
-                showResult(`
-                    ✅ Đã bóc tách thành công TikTok!<br>
-                    <a href="${targetUrl}" target="_blank" rel="noopener noreferrer">Tải ${fileType} trực tiếp</a>
-                `, true);
-            } else {
-                showResult('Không thể lấy video TikTok. Có thể video bị riêng tư hoặc link lỗi.', false);
-            }
-        } 
-        
-        // 2. XỬ LÝ YOUTUBE & FACEBOOK
-        else if (isYouTube || isFacebook) {
-            // Dùng Cobalt API để bóc tách video FB/YT
-            try {
-                const res = await fetch('https://api.cobalt.tools/api/json', {
-                    method: 'POST',
-                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: raw, isAudioOnly: kind === 'audio', vQuality: "1080" })
-                });
-                
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.url) {
-                        const fallbackTitle = isYouTube ? "Tùy chọn chất lượng khác (SSYouTube)" : "Tùy chọn chất lượng khác (SnapSave)";
-                        const fallbackUrl = isYouTube ? `https://ssyoutube.com/vi/?url=${encodeURIComponent(raw)}` : `https://snapsave.app/?url=${encodeURIComponent(raw)}`;
-                        
-                        showResult(`
-                            ✅ Đã tìm thấy file Media!<br>
-                            <a href="${data.url}" target="_blank" rel="noopener noreferrer">Tải Xuống Tự Động (HD)</a><br><br>
-                            <small>Hoặc xem tất cả độ phân giải (1080p, 720p, 480p):</small><br>
-                            <a href="${fallbackUrl}" target="_blank" style="background:#5b8cff; margin-top:5px;">${fallbackTitle} ↗</a>
-                        `, true);
-                        return;
-                    }
-                }
-                throw new Error("Cobalt API blocked or failed");
-            } catch (err) {
-                // Nếu API Cobalt bị chặn CORS hoặc quá tải -> Chuyển sang trang tải có chọn chất lượng
-                const dlName = isYouTube ? "SSYouTube (Hỗ trợ 1080p, 720p, MP3)" : "SnapSave (Hỗ trợ HD, SD, MP3)";
-                const dlUrl = isYouTube ? `https://ssyoutube.com/vi/?url=${encodeURIComponent(raw)}` : `https://snapsave.app/?url=${encodeURIComponent(raw)}`;
-                
-                showResult(`
-                    ⚠️ Do trình duyệt chặn tải ẩn, hãy lấy các chất lượng tải về tại đây:<br>
-                    <a href="${dlUrl}" target="_blank" rel="noopener noreferrer">Mở công cụ bóc tách ${dlName}</a>
-                `, true);
-            }
-        } 
-        
-        // 3. XỬ LÝ SHOPEE (Affiliate)
-        else if (isShopee) {
-            showResult(`
-                🛍️ <b>Video Shopee:</b><br>
-                Shopee chặn tải qua website ngoài để bảo vệ bản quyền. Để lấy video làm Affiliate, bạn hãy làm theo cách sau:<br><br>
-                1. Mở trang <a href="https://shopeevideodownloader.com/" target="_blank" style="background:#f53d2d; display:inline-block; padding:5px 10px; margin:5px 0;">Shopee Video Downloader</a><br>
-                2. Dán link vừa copy vào đó để tải về máy.<br>
-                3. Hoặc dùng tính năng "Lưu video" trực tiếp trên App Shopee (nếu có).
-            `, true);
-        } 
-        
-        // 4. CÁC NỀN TẢNG KHÁC
-        else {
-            showResult(`Hệ thống chưa có API tải trực tiếp cho trang này. Vui lòng thử lại với link TikTok, YouTube, FB, hoặc Shopee.`, false);
-        }
-    } catch (error) {
-        showResult('Lỗi kết nối mạng hoặc máy chủ. Vui lòng thử lại.', false);
-    } finally {
-        openBtn.disabled = false;
-        openBtn.textContent = kind === 'audio' ? 'Lấy Link MP3 ⬇' : 'Lấy Link Video ⬇';
-    }
-});
-
-// Chức năng dán link
 document.querySelector('#pasteBtn').addEventListener('click', async () => {
     try {
         input.value = await navigator.clipboard.readText();
-        showResult('Đã dán link từ clipboard. Hãy bấm Lấy Link.', false);
     } catch {
-        showResult('Trình duyệt không cho phép đọc clipboard. Hãy nhấn giữ ô nhập và chọn Dán thủ công.', false);
+        alert('Trình duyệt chặn quyền. Vui lòng nhấn giữ và chọn Dán.');
     }
 });
 
-// Hàm hiển thị thông báo
-function showResult(text, isHTML = false) {
-    if (isHTML) {
-        result.innerHTML = text;
-    } else {
-        result.textContent = text;
+document.querySelector('#openBtn').addEventListener('click', async () => {
+    const raw = input.value.trim();
+    if (!raw) {
+        result.innerHTML = '⚠️ Bạn hãy dán một đường dẫn trước nhé.';
+        result.classList.add('show');
+        return;
     }
-    result.classList.add('show');
-}
 
-// Cập nhật năm
+    result.innerHTML = '<div style="text-align:center">⏳ Đang lấy dữ liệu tải... Vui lòng đợi.</div>';
+    result.classList.add('show');
+
+    try {
+        const urlObj = new URL(raw);
+        const format = kind === 'video' ? 'mp4' : 'mp3';
+
+        // 1. XỬ LÝ TIKTOK (Dùng API lấy link trực tiếp mượt mà nhất)
+        if (raw.includes('tiktok.com')) {
+            const res = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(raw)}&hd=1`);
+            const data = await res.json();
+            if (data.code === 0) {
+                const downloadUrl = kind === 'video' ? data.data.play : data.data.music;
+                result.innerHTML = `
+                    <div style="margin-bottom:10px;">✅ <b>Thành công:</b> Đã lấy được file từ TikTok.</div>
+                    <a href="${downloadUrl}" target="_blank" class="btn success" download>⬇ Tải xuống ${kind.toUpperCase()}</a>
+                `;
+            } else {
+                result.innerHTML = '❌ Không tìm thấy video TikTok. Đảm bảo video ở chế độ công khai.';
+            }
+            return;
+        }
+
+        // 2. XỬ LÝ YOUTUBE & FACEBOOK (Dùng Iframe nhúng để tránh lỗi CORS và không nhảy trang)
+        if (raw.includes('youtube.com') || raw.includes('youtu.be') || raw.includes('facebook.com') || raw.includes('fb.watch') || raw.includes('fb.com')) {
+            let embedSrc = `https://loader.to/api/button/?url=${encodeURIComponent(raw)}&f=${format === 'mp4' ? '1080' : 'mp3'}`;
+            
+            result.innerHTML = `
+                <div style="margin-bottom:5px;">✅ <b>Đã kết nối máy chủ:</b> Bấm nút tải bên dưới (Nút được nhúng trực tiếp, không nhảy tab).</div>
+                <iframe class="iframe-container" src="${embedSrc}"></iframe>
+                <div class="note" style="margin-top:5px; font-size:12px;">* Nếu nút tải không chạy, vui lòng thử lại sau.</div>
+            `;
+            return;
+        }
+
+        // 3. XỬ LÝ SHOPEE
+        if (raw.includes('shopee.vn') || raw.includes('shp.ee')) {
+            result.innerHTML = `
+                <div style="color:#ffb74d; margin-bottom:10px;">⚠️ <b>Lưu ý với Shopee:</b> Shopee có cơ chế chống tải tự động rất gắt gao, không thể tải ẩn qua nền tảng tĩnh như GitHub Pages.</div>
+                <div>Để tải video làm Affiliate, bạn cần mở video trên trình duyệt máy tính, chuột phải vào video và chọn <b>"Lưu video thành..." (Save video as...)</b>.</div>
+            `;
+            return;
+        }
+
+        result.innerHTML = '⚠️ Nền tảng này hiện chưa được hỗ trợ hoàn chỉnh.';
+    } catch (e) {
+        result.innerHTML = '❌ Link chưa hợp lệ hoặc có lỗi xảy ra. Vui lòng kiểm tra lại.';
+    }
+});
+
 document.querySelector('#year').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
+
+```
