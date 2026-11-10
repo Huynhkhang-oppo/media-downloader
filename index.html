@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Media Downloader — Công cụ media trực tuyến</title>
+<meta name="description" content="Công cụ mở nhanh video và audio từ các nền tảng phổ biến.">
+<style>
+:root{--bg:#0b1020;--panel:#121a2e;--line:#26334f;--text:#edf3ff;--muted:#a9b7d2;--blue:#5b8cff;--violet:#9a68ff}
+*{box-sizing:border-box}body{margin:0;font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(circle at 15% 0,#1b2b57 0,transparent 35%),var(--bg);color:var(--text)}
+.wrap{max-width:900px;margin:auto;padding:28px 18px 50px}.top{display:flex;align-items:center;gap:12px;margin:12px 0 38px}.logo{width:45px;height:45px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--violet));display:grid;place-items:center;font-size:23px}.brand{font-weight:800;font-size:19px}.tag{font-size:12px;color:var(--muted)}
+.hero{text-align:center;margin-bottom:28px}.hero h1{font-size:clamp(30px,6vw,48px);line-height:1.12;margin:0 0 13px;letter-spacing:-1.4px}.grad{background:linear-gradient(90deg,#78a8ff,#c39aff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:620px;margin:0 auto}
+.card{background:rgba(18,26,46,.92);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 18px 60px #0003}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tab{border:1px solid var(--line);background:#10182b;color:var(--muted);padding:9px 14px;border-radius:12px;cursor:pointer;font-weight:650}.tab.active{background:#263b70;border-color:#557fe0;color:white}
+label{display:block;font-size:13px;color:var(--muted);margin:12px 0 7px}input,select{width:100%;padding:14px 15px;border-radius:12px;border:1px solid #344362;background:#0b1222;color:white;font:inherit;outline:none}input:focus,select:focus{border-color:var(--blue)}.row{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:13px}.btn{border:0;border-radius:12px;padding:13px 18px;font:inherit;font-weight:750;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--violet));color:white}.btn.secondary{background:#202c47;border:1px solid #354565}.note{font-size:13px;color:var(--muted);margin-top:13px}.result{display:none;margin-top:16px;padding:14px;border:1px solid #315b48;background:#10271f;border-radius:12px;color:#c9f7dc}.result.show{display:block}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.quick a{display:block;text-decoration:none;color:var(--text);padding:15px;border:1px solid var(--line);border-radius:14px;background:#10182b}.quick strong{display:block}.quick small{color:var(--muted)}.section{margin-top:24px}.section h2{font-size:19px}.steps{color:var(--muted);padding-left:20px}.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:28px}
+@media(max-width:600px){.row{grid-template-columns:1fr}.quick{grid-template-columns:1fr}.card{padding:16px}.top{margin-bottom:28px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="logo">▶</div><div><div class="brand">Media Downloader</div><div class="tag">Công cụ media • miễn phí</div></div></header>
+<section class="hero"><h1>Tải & mở nội dung<br><span class="grad">theo cách đơn giản</span></h1><p>Dán đường dẫn nội dung của bạn để mở nhanh trên nền tảng gốc. Website này chạy hoàn toàn trên GitHub Pages.</p></section>
+<main class="card">
+<div class="tabs" role="tablist">
+<button class="tab active" data-kind="video" type="button">🎬 Video</button>
+<button class="tab" data-kind="audio" type="button">🎵 MP3 / Audio</button>
+</div>
+<label for="url">Đường dẫn video / bài đăng</label>
+<input id="url" type="url" placeholder="Dán link TikTok, YouTube hoặc Facebook…" autocomplete="url">
+<div class="row"><button class="btn" id="openBtn">Mở liên kết ↗</button><button class="btn secondary" id="pasteBtn" type="button">Dán link</button></div>
+<div class="result" id="result" role="status"></div>
+<p class="note">ℹ️ GitHub Pages không có máy chủ xử lý video. Trang này không tự tải video không logo hay chuyển video thành MP3; hãy dùng chức năng tải chính thức của nền tảng hoặc nội dung bạn có quyền tải.</p>
+</main>
+<div class="quick">
+<a href="https://www.tiktok.com/" target="_blank" rel="noopener"><strong>♪ TikTok</strong><small>Mở TikTok</small></a>
+<a href="https://www.youtube.com/" target="_blank" rel="noopener"><strong>▶ YouTube</strong><small>Mở YouTube</small></a>
+<a href="https://www.facebook.com/" target="_blank" rel="noopener"><strong>f Facebook</strong><small>Mở Facebook</small></a>
+</div>
+<section class="section card"><h2>Hướng dẫn sử dụng</h2><ol class="steps"><li>Sao chép link video/bài đăng từ TikTok, YouTube hoặc Facebook.</li><li>Dán link vào ô phía trên.</li><li>Nhấn <b>Mở liên kết</b> để truy cập nội dung trên nền tảng gốc.</li></ol><p class="note">Chỉ tải hoặc chuyển đổi nội dung khi bạn có quyền và phù hợp với điều khoản dịch vụ của nền tảng.</p></section>
+<footer class="footer">© <span id="year"></span> Media Downloader • Website tĩnh, không lưu link hay dữ liệu người dùng.</footer>
+</div>
+<script>
+const input=document.querySelector('#url'), result=document.querySelector('#result');
+let kind='video';
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');kind=b.dataset.kind;document.querySelector('#openBtn').textContent=kind==='audio'?'Mở link audio ↗':'Mở liên kết ↗';}));
+document.querySelector('#openBtn').addEventListener('click',()=>{
+ const raw=input.value.trim();
+ if(!raw){result.textContent='Bạn hãy dán một đường dẫn trước nhé.';result.classList.add('show');return;}
+ let u;try{u=new URL(raw)}catch{result.textContent='Link chưa hợp lệ. Vui lòng kiểm tra lại.';result.classList.add('show');return;}
+ if(!['http:','https:'].includes(u.protocol)){result.textContent='Chỉ chấp nhận đường dẫn http hoặc https.';result.classList.add('show');return;}
+ result.innerHTML='Đang mở link trong tab mới. <b>Trang này không tải file trực tiếp.</b>';result.classList.add('show');
+ window.open(u.href,'_blank','noopener,noreferrer');
+});
+document.querySelector('#pasteBtn').addEventListener('click',async()=>{try{input.value=await navigator.clipboard.readText();result.textContent='Đã dán link từ clipboard.';}catch{result.textContent='Trình duyệt không cho phép đọc clipboard. Hãy nhấn giữ và chọn Dán.';}result.classList.add('show');});
+document.querySelector('#year').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
